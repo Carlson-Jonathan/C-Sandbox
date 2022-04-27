@@ -20,6 +20,12 @@ public:
 
     void printList(const T* node) {
         cout << node->value << endl;
+        
+        if(node->after == head) {
+            cout << node->after->value << " (Circular List...)" << endl;
+            return;
+        }
+            
         if(node->after)
             printList(node->after);
     }
@@ -33,7 +39,7 @@ public:
     // ---------------------------------------------------------------------------------------------
 
     void verifyIndex(int index, string functionName) {
-        if(index < 0 || index > size()) {
+        if(index < 0 || index >= size()) {
             cout << "ERROR: Out of range index - 'LinkedList::" << functionName                                          << "(" << to_string(index) << ")'" << endl; 
             exit(139);
         } 
@@ -43,7 +49,7 @@ public:
 
     int size(const T* node) {
         int i = 1;
-        if(node->after)
+        if(node->after && node->after != head)
             i += size(node->after);
         return i;
     }
@@ -128,18 +134,30 @@ public:
             
         if(node->after)
             node->after->before = node->before;
+
+        // If erasing the head, make the next element the head.
+        if(node == head && node->after)    
+            head = node->after;
         
-        if(!node->before && node->after)    
-            this->head = node->after;
-        
+        // Erase the only elemenet
+        if(node == head && !node->after) {
+            head = NULL;
+            delete head;
+        }
+            
         node->after = NULL;
         node->before = NULL;
+        node = NULL;
         delete node;
     }
 
     // ---------------------------------------------------------------------------------------------
 
-    void loopList() {
+    void makeListCircular() {
+        if(!head){
+            cout << "ERROR: LinkedList::makeListCircular(): Cannot make circular list from empty list." << endl;
+            exit(139);
+        }
         Node* tail = getElement(size() - 1);
         head->before = tail;
         tail->after = head;

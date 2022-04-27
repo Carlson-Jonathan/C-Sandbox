@@ -66,7 +66,7 @@ bool getElement_test(string & error) {
 }
 
 // -------------------------------------------------------------------------------------------------
-// Note: This test depends on prior tests working.
+// This test depends on prior tests working.
 bool insert_test(string & error) {
     LinkedList<Node> newList;
 
@@ -122,23 +122,131 @@ bool insert_test(string & error) {
 }
 
 // -------------------------------------------------------------------------------------------------
+// This test depends on prior tests working.
+bool erase_test(string & error) {
+
+    LinkedList<Node> newList;
+    
+    for(int i = 0; i < 10; i++) {
+        newList.insert(new Node, i);
+        if(i) newList.getElement(i)->value = to_string(i);
+    }
+    
+    newList.makeListCircular();
+    newList.printList();
+
+    // Single erase.
+    newList.erase(7);
+    for(int i = 0; i < newList.size(); i++) {
+        string currentValue = newList.getElement(i)->value;
+        if(currentValue == "7") {
+            error = "Indicated element is not being erased properly.";
+            return false;
+        }
+    }
+
+    newList.printList();
+    
+    // Erase and replace head.
+    newList.getElement(0)->value = "Head";
+    newList.erase(0);
+    if(newList.head->value != "1") {
+        error = "Head is not being erased/replaced correctly.";
+        return false;
+    }
+
+    newList.printList();
+    
+    // Erase last element.
+    newList.erase(newList.size() - 1);
+    for(int i = 0; i < newList.size(); i++) {
+        string currentValue = newList.getElement(i)->value;
+        if(currentValue == "9") {
+            error = "Last element is not being erased properly.";
+            return false;
+        }
+    }
+
+    newList.printList();
+    
+    // Erase entire list.
+    int size = newList.size();
+    for(int i = 0; i < size; i++) {
+        cout << "======== Erase entire list ========" << endl;
+        newList.erase(0);
+        newList.printList();
+    }
+
+    
+    if(newList.head) {
+        error = "Unable to erase entire list:\n\tList size = " + to_string(newList.size()) +
+                "\n\tHead pointer is NULL = " + to_string(newList.head == NULL);
+        return false;
+    }
+
+    newList.printList();
+    
+    return true;
+}
+
+// -------------------------------------------------------------------------------------------------
+
+bool makeListCircular_test(string & error) {
+
+    LinkedList<Node> newList;
+    
+    for(int i = 0; i < 10; i++) {
+        newList.insert(new Node, i);
+        newList.getElement(i)->value = to_string(i);
+    }
+
+    newList.makeListCircular();
+
+    if(newList.size() != 10) {
+        error = "size() is incompatible with a circular list.";
+        return false;            
+    }
+    
+    for(int i = 0; i < newList.size(); i++) {
+        if(newList.getElement(i)->value != to_string(i)) {
+            error = "getElement(" + to_string(i) + ") is incompatible with a circular list.";
+            return false;
+        }
+    }
+
+    Node* newNode = new Node;
+    newNode->value = "New Insert";
+    newList.insert(newNode, 4);
+    
+    // newList.printList();
+    // cout << "List size: " << newList.size() << endl;
+    
+    return true;
+}
+
+// -------------------------------------------------------------------------------------------------
 
 int main() {
 
     string error    = "";
-    bool size       = size_test(error);
-    bool getElement = getElement_test(error);
-    bool insert     = insert_test(error);
+    bool size       = size_test(error),
+         getElement = getElement_test(error),
+         insert     = insert_test(error),
+         erase      = erase_test(error),
+         circular   = makeListCircular_test(error);
 
     vector<pair<bool, string>> results = {
         {size,       "size_test()"},
         {getElement, "getElement_test()"},
-        {insert,     "insert_test()"}
+        {insert,     "insert_test()"},
+        {erase,      "erase_test()"},
+        {circular,   "makeListCircular_test()"}   
     };
 
-    cout << "===================================" << endl;
-    cout << "Unit test results for LinkedList.h:" << endl;
-    cout << "===================================" << endl;
+    cout << "===================================\n"
+         << "Unit test results for LinkedList.h:\n"
+         << "===================================" 
+         << endl;
     
     for(int i = 0; i < results.size(); i++) {
         if(results[i].first) 
