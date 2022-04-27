@@ -105,7 +105,7 @@ public:
 
         T* node = getElement(index);
 
-        if(node->before) {
+        if(index) {
             newNode->before = node->before;
             node->before->after = newNode;
         } else
@@ -139,23 +139,21 @@ public:
         if(node == head && node->after)    
             head = node->after;
         
-        // Erase the only elemenet
-        if(node == head && !node->after) {
-            head = NULL;
-            delete head;
-        }
-            
         node->after = NULL;
         node->before = NULL;
-        node = NULL;
         delete node;
+
+        if(node == head) 
+            this->head = NULL;
     }
 
     // ---------------------------------------------------------------------------------------------
 
     void makeListCircular() {
-        if(!head){
-            cout << "ERROR: LinkedList::makeListCircular(): Cannot make circular list from empty list." << endl;
+        if(!head || !head->after || head->after == head) {
+            cout << "ERROR: LinkedList::makeListCircular(): "
+                 << "Cannot make list circular with less than 2 elements."
+                 << endl;
             exit(139);
         }
         Node* tail = getElement(size() - 1);

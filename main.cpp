@@ -132,9 +132,6 @@ bool erase_test(string & error) {
         if(i) newList.getElement(i)->value = to_string(i);
     }
     
-    newList.makeListCircular();
-    newList.printList();
-
     // Single erase.
     newList.erase(7);
     for(int i = 0; i < newList.size(); i++) {
@@ -145,8 +142,6 @@ bool erase_test(string & error) {
         }
     }
 
-    newList.printList();
-    
     // Erase and replace head.
     newList.getElement(0)->value = "Head";
     newList.erase(0);
@@ -154,8 +149,6 @@ bool erase_test(string & error) {
         error = "Head is not being erased/replaced correctly.";
         return false;
     }
-
-    newList.printList();
     
     // Erase last element.
     newList.erase(newList.size() - 1);
@@ -167,25 +160,18 @@ bool erase_test(string & error) {
         }
     }
 
-    newList.printList();
-    
     // Erase entire list.
     int size = newList.size();
     for(int i = 0; i < size; i++) {
-        cout << "======== Erase entire list ========" << endl;
         newList.erase(0);
-        newList.printList();
     }
 
-    
     if(newList.head) {
         error = "Unable to erase entire list:\n\tList size = " + to_string(newList.size()) +
                 "\n\tHead pointer is NULL = " + to_string(newList.head == NULL);
         return false;
     }
 
-    newList.printList();
-    
     return true;
 }
 
@@ -199,8 +185,6 @@ bool makeListCircular_test(string & error) {
         newList.insert(new Node, i);
         newList.getElement(i)->value = to_string(i);
     }
-
-    newList.makeListCircular();
 
     if(newList.size() != 10) {
         error = "size() is incompatible with a circular list.";
@@ -218,9 +202,6 @@ bool makeListCircular_test(string & error) {
     newNode->value = "New Insert";
     newList.insert(newNode, 4);
     
-    // newList.printList();
-    // cout << "List size: " << newList.size() << endl;
-    
     return true;
 }
 
@@ -229,6 +210,7 @@ bool makeListCircular_test(string & error) {
 int main() {
 
     string error    = "";
+
     bool size       = size_test(error),
          getElement = getElement_test(error),
          insert     = insert_test(error),
