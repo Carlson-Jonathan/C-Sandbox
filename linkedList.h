@@ -12,11 +12,9 @@ template<typename T>
 class LinkedList {
 public:
 
-    LinkedList(int numberOfLinks = 1) {
-        head = createLinkedList(numberOfLinks);
-    }
+    LinkedList() {}
 
-    T* head;
+    T* head = NULL;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -29,13 +27,13 @@ public:
     // ---------------------------------------------------------------------------------------------
 
     void printList() {
-        printList(head);
+        if(head) printList(head);
     }
 
     // ---------------------------------------------------------------------------------------------
 
     void verifyIndex(int index, string functionName) {
-        if(index < 0 || index >= size()) {
+        if(index < 0 || index > size()) {
             cout << "ERROR: Out of range index - 'LinkedList::" << functionName                                          << "(" << to_string(index) << ")'" << endl; 
             exit(139);
         } 
@@ -53,7 +51,8 @@ public:
     // ---------------------------------------------------------------------------------------------
 
     int size() {
-        return size(head);
+        if(head) return size(head);
+        return 0;
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -78,6 +77,19 @@ public:
     // ---------------------------------------------------------------------------------------------
 
     void insert(T* newNode, int index) {
+        if(index < 0 || index > size()) {
+            cout << "ERROR: Out of range index - 'LinkedList::insert(" << to_string(index) << ")'" 
+                 << endl; 
+            exit(139);
+        } 
+        
+        // Insert into empty list
+        if(!this->head) {
+            this->head = newNode;
+            return;
+        }
+
+        // Append to end of list
         if(index == size()) {
             T* node = getElement(index - 1);
             newNode->before = node;
@@ -85,14 +97,13 @@ public:
             return;
         }
 
-        verifyIndex(index, "insert");
-        
         T* node = getElement(index);
-        
+
         if(node->before) {
             newNode->before = node->before;
             node->before->after = newNode;
         } else
+            // Insert as first item in list
             this->head = newNode;
         
         newNode->after = node;
@@ -101,13 +112,13 @@ public:
 
     // ---------------------------------------------------------------------------------------------
 
+    void push_back(T* node) {
+        insert(node, size());
+    }
+
+    // ---------------------------------------------------------------------------------------------
+
     void erase(int index) {
-        // if(size() == 1) {
-        //     cout << "ERROR: LinkedList::erase() - Cannot erase all elements in linked list." 
-        //          << endl;
-        //     exit(139);
-        // }
-            
         verifyIndex(index, "erase");
         
         T* node = getElement(index);
@@ -132,23 +143,6 @@ public:
         Node* tail = getElement(size() - 1);
         head->before = tail;
         tail->after = head;
-    }
-
-private:
-
-    // ---------------------------------------------------------------------------------------------
-
-    T* createLinkedList(int newLinks = 1, T* head = new Node) {
-    
-        if(--newLinks) {
-            T* newNode = new Node;
-            newNode->before = head;
-            head->after = newNode;
-            newNode->value = to_string(newLinks);
-            createLinkedList(newLinks, newNode);
-        }
-    
-        return head;
     }
 };
 
