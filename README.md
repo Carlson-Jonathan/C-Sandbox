@@ -1,7 +1,7 @@
 # Linked-List
 <h3>Description</h3>
 <p>This is a 'Linked List' datatype class for C++. Linked lists are not part 
-  of the C++ standard library, and I ocassionally need them, so made one. 
+  of the C++ standard library, and I occasionally need them, so made one. 
   Any class, struct or primitive datatype can be used.</p>
 <h3>Features</h3>
 <ul><li>size() : Integer<p>Returns the size of the linked list.</p></li>
@@ -36,7 +36,7 @@
 
 1. ) `#include` your datatype (class/struct) in the `linkedList.h` file.</li>
 2. ) In your class/struct file, set pointers of your object and name them `before` and `after`.
-     Be sure to initialze these pointers with `NULL`.
+     Be sure to initialize these pointers with `NULL`.
 3. ) To use the `LinkedList::printList()` function, edit the `cout` line in `linkedList.h` to
      show the information you want to see about your class or struct.
   
