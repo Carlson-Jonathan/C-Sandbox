@@ -33,3 +33,7 @@
 
 # Build Folder
 Build
+
+# Misc
+main*
+.breakpoints
