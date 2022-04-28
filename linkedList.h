@@ -1,9 +1,5 @@
 /* *************************************************************************************************
  * Copyright Jonathan Carlson 2022
- * Reminders:
- *    1.) #include your "Node" class/struct in this file.
- *    2.) Make sure you set pointers to before/after in your class/struct and initialize to Null.
- @    3.) To print lists, tweak the printList() function to ouput your class/struct variable.
  * ************************************************************************************************/
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
