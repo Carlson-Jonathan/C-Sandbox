@@ -39,7 +39,8 @@ public:
 
     void verifyIndex(int index, string functionName, int maxSize) {
         if(index < 0 || index > maxSize) {
-            cout << "ERROR: Out of range index - 'LinkedList::" << functionName                                          << "(" << to_string(index) << ")'" << endl; 
+            cout << "ERROR: Out of range index - 'LinkedList::" << functionName 
+                 << "(" << to_string(index) << ")'" << endl; 
             exit(139);
         } 
     }
