@@ -34,9 +34,7 @@
 
 <h3>Setup and Instructions For Use</h3>
 
-1. ) `#include` your datatype (class/struct) in the `linkedList.h` file.</li>
-2. ) In your class/struct file, set pointers of your object and name them `before` and `after`.
-     Be sure to initialize these pointers with `NULL`.
-3. ) To use the `LinkedList::printList()` function, edit the `cout` line in `linkedList.h` to
-     show the information you want to see about your class or struct.
+In your class/struct file, set pointers of your object and name them `before` and `after`. Be sure to initialize these pointers with `NULL`. 
+
+To use the `LinkedList::printList()` function, edit the `cout` line in `linkedList.h` to show the information you want to see about your class or struct.
   

@@ -11,8 +11,6 @@
 #include <iostream> 
 using namespace std;
 
-#include "node.h"
-
 template<typename T>
 class LinkedList {
 public:
