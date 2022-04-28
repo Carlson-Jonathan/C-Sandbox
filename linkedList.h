@@ -1,5 +1,10 @@
-// Copyright Jonathan Carlson 2022
-
+/* *************************************************************************************************
+ * Copyright Jonathan Carlson 2022
+ * Reminders:
+ *    1.) #include your "Node" class/struct in this file.
+ *    2.) Make sure you set pointers to before/after in your class/struct and initialize to Null.
+ @    3.) To print lists, tweak the printList() function to ouput your class/struct variable.
+ * ************************************************************************************************/
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
@@ -17,12 +22,12 @@ public:
     T* head = NULL;
 
     // ---------------------------------------------------------------------------------------------
-
+    // Modify the commented out 'cout' lines below to display information about your datatype.
     void printList(const T* node) {
-        cout << node->value << endl;
+        // cout << node->value << endl;
         
         if(node->after == head) {
-            cout << node->after->value << " (Circular List...)" << endl;
+            // cout << node->after->value << " (Circular List...)" << endl;
             return;
         }
             
@@ -38,8 +43,8 @@ public:
 
     // ---------------------------------------------------------------------------------------------
 
-    void verifyIndex(int index, string functionName) {
-        if(index < 0 || index >= size()) {
+    void verifyIndex(int index, string functionName, int maxSize) {
+        if(index < 0 || index > maxSize) {
             cout << "ERROR: Out of range index - 'LinkedList::" << functionName                                          << "(" << to_string(index) << ")'" << endl; 
             exit(139);
         } 
@@ -64,7 +69,7 @@ public:
     // ---------------------------------------------------------------------------------------------
 
     T* getElement(int index, T* node) {
-        verifyIndex(index, "getElement");
+        verifyIndex(index, "getElement()", size());
         
         if(index) {
             if(node->after)
@@ -83,11 +88,7 @@ public:
     // ---------------------------------------------------------------------------------------------
 
     void insert(T* newNode, int index) {
-        if(index < 0 || index > size()) {
-            cout << "ERROR: Out of range index - 'LinkedList::insert(" << to_string(index) << ")'" 
-                 << endl; 
-            exit(139);
-        } 
+        verifyIndex(index, "insert()", size());        
         
         // Insert into empty list
         if(!this->head) {
@@ -95,24 +96,28 @@ public:
             return;
         }
 
-        // Append to end of list
+        // Append to end of list (getElement(index) will break because it doesnt exist.)
         if(index == size()) {
             T* node = getElement(index - 1);
             newNode->before = node;
+            newNode->after = node->after;
+            if(node->after)
+                node->after->before = newNode;
             node->after = newNode;
             return;
         }
 
+        // Default (list already contains elements)
         T* node = getElement(index);
-
-        if(index) {
-            newNode->before = node->before;
-            node->before->after = newNode;
-        } else
-            // Insert as first item in list
+        if(node == head)
             this->head = newNode;
         
+        newNode->before = node->before;
         newNode->after = node;
+        
+        if(node->before)
+            node->before->after = newNode;
+            
         node->before = newNode;
     }
 
@@ -125,7 +130,7 @@ public:
     // ---------------------------------------------------------------------------------------------
 
     void erase(int index) {
-        verifyIndex(index, "erase");
+        verifyIndex(index, "erase", size() - 1);
         
         T* node = getElement(index);
         
@@ -150,13 +155,12 @@ public:
     // ---------------------------------------------------------------------------------------------
 
     void makeListCircular() {
-        if(!head || !head->after || head->after == head) {
-            cout << "ERROR: LinkedList::makeListCircular(): "
-                 << "Cannot make list circular with less than 2 elements."
+        if(!head) {
+            cout << "ERROR: LinkedList::makeListCircular(): Cannot make empty list circular."
                  << endl;
             exit(139);
         }
-        Node* tail = getElement(size() - 1);
+        T* tail = getElement(size() - 1);
         head->before = tail;
         tail->after = head;
     }
