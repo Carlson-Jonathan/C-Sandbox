@@ -12,6 +12,10 @@
 
     Node* node = linkedList.getElement(4);
 
+<li>Subscripting [] Operator : Node*<p>Gets an element node at the index parameter.</p></li>
+
+    Node* node = linkedList[4];    
+
 <li>insert(Node*, int) : void<p>Inserts a node into a linked list at the index parameter.</p></li>
 
     Node* nodeToInsert = new Node;

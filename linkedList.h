@@ -159,6 +159,12 @@ public:
         head->before = tail;
         tail->after = head;
     }
+
+    // ---------------------------------------------------------------------------------------------
+
+    T* operator[] (int x) {
+        return getElement(x);
+    }
 };
 
 #endif // LINKEDLIST_H
